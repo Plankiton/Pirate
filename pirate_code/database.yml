@@ -1,0 +1,38 @@
+user:
+  bio: ''
+  name: ''
+  username: ''
+  password: ''
+  favorites: []
+  liked_posts: [<post>]
+  curriculum: <file>
+
+post:
+  title: ''
+  datetime: ''
+  description: ''
+  tags: ['']
+  likes: [<user>]
+  content: [<content>]
+  banner: <file>
+  author: <user>
+
+project:
+  title: ''
+  datetime: ''
+  repository: ''
+  description: ''
+  tags: ['']
+  likes: [<user>]
+  authors: [user]
+  content: [<content>]
+  banner: <file>
+
+content:
+  text: ''
+  lang: ['']
+  file: <file>
+
+file:
+  mimetype: ''
+  directory: ''

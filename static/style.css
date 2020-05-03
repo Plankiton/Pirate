@@ -241,18 +241,6 @@ footer {
     margin: auto;
 }
 
-#post_info_form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 30px;
-    margin: 30px;
-    border: solid 0.5px;
-    border-color: #ccc;
-    width: 100%;
-}
-
 form input {
     background: #FFF;
     border: none;

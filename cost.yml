@@ -1,0 +1,4 @@
+server:
+  provider: hostgator.com
+  start_cost: 300.00 Rs
+  cost_by_month: 30.00 Rs

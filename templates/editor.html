@@ -36,6 +36,21 @@
                 border: solid 0.5px;
                 border-color: #ccc;
                 box-sizing: border-box;
+                padding: 30px;
+            }
+
+            #post_info_form {
+                width: 100%;
+            }
+
+            #post_info_form input {
+                height: 30px;
+                width: 100% !important;
+            }
+
+            p #description {
+                height: 100px;
+                width: 100% !important;
             }
 
             #editor-container {
@@ -100,12 +115,10 @@
 
         </div>
         <div id='post_info_form'>
-            <form action="send_post" method="get" accept-charset="utf-8">
-                <p><input placeholder="Author name" type="text" name="author" id="author" value=""></p>
-                <p><input placeholder="Email" type="text" name="email" id="email" value=""></p>
-                <p><input placeholder="Github username" type="text" name="github" id="github" value=""></p>
-                <p><input placeholder="Post title" type="text" name="title" id="title" value=""></p>
-                <p><input placeholder="Post categories" type="text" name="tags" id="tags" value=""></p>
+            <form id='send_post' method="post" accept-charset="utf-8">
+                <p><input placeholder="Title" type="text" name="title" id="title" value=""></p>
+                <p><input placeholder="Categories" type="text" name="tags" id="tags" value=""></p>
+                <p><TextArea placeholder="Description" type="text" name="description" id="description" form="send_post"></TextArea></p>
             </form>
         </div>
 

@@ -241,7 +241,8 @@ footer {
     margin: auto;
 }
 
-form input {
+form input, form TextArea {
+    height: 30px;
     background: #FFF;
     border: none;
 }

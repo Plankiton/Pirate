@@ -1,0 +1,84 @@
+<html lang="en">
+    <head>
+        <title>Pirate Society</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="language" content="english">
+        <meta name="viewport" content="width=device-width">
+
+        <meta name="description" content="A text editor for edit the posts of piratesociety.org">
+
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:site" content="@piratesociety">
+        <meta name="twitter:title" content="PirateSociety">
+        <meta name="twitter:description" content="A text editor for edit the posts of piratesociety.org">
+        <meta name="twitter:image" content="/static/favicon.png">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="/editor">
+        <meta property="og:image" content="/static/favicon.png">
+        <meta property="og:title" content="PirateEditor">
+        <meta property="og:site_name" content="PirateSociety">
+
+        <link rel="shortcut icon" href="/static/favicon.png" type="image/x-icon">
+
+        <link rel="stylesheet" href="/static/style.css" type="text/css" media="all">
+
+        <style type="text/css" media="screen">
+        #register {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around;
+            margin: 50px;
+        }
+
+        #register input {
+            margin: 5px;
+        }
+
+        #register #send {
+            background-color: #DDD !important;
+            color: #000
+        }
+
+        #register #send:hover {
+            background-color: #FFF !important;
+        }
+
+        </style>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js" charset="utf-8"></script>
+    </head>
+    <body>
+        <script src="/static/header.js" charset="utf-8"></script>
+        <section>
+
+
+            <form id="register" method="post" accept-charset="utf-8">
+                <input placeholder="Username" type="text" name="username" id="username" value="">
+                <input placeholder="Email" type="email" name="email" id="email" value="">
+                <input placeholder="Password" type="password" name="password" id="password" value="">
+                <input type="button" name="send" id="send" value="register" onclick="send_data()">
+            </form>
+
+
+        </section>
+        <script src="/static/footer.js" charset="utf-8"></script>
+
+        <script charset="utf-8">
+            function send_data(){
+                let username = document.getElementById('username').value;
+                let email = document.getElementById('email').value;
+                let password = document.getElementById('password').value;
+
+                axios.post('/sign-up', {
+                    username, email, password
+                  })
+                  .then((response) => {
+                    console.log(response);
+                  }).catch((error) => {
+                    console.log(error);
+                  });
+            }
+        </script>
+    </body>
+</html>

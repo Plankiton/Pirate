@@ -1,16 +1,24 @@
-from flask import Flask, request, render_template as render, jsonify
+from pirate.session import pirate_session as session
+from flask import (Flask,
+                   request,
+                   jsonify,
+                   render_template as render)
 
-pirate = Flask('Pirate Code')
+pirate = Flask('Pirate Society')
+pirate.config['SECRET_KEY'] = 'generic_secret_key'
 
 from pirate.database import pirate_db, hash
 @pirate.route('/', methods = ['GET'])
 def index():
     return 'Hello World'
 
+
 @pirate.route('/sign-up', methods = ['GET', 'POST'])
 def register():
     if request.method == 'GET':
-        return render('register.html')
+        try:
+            return redirect(f'/{session["pirate_user"]}')
+        except KeyError: return render('register.html')
 
     data = request.json
     usernames = list(pirate_db.db.user.find({'username': data['username']}))
@@ -18,6 +26,9 @@ def register():
 
     if emails == [] and usernames == []:
         data['password'] = hash(data['password'])
+
+        session['pirate_user'] = data['username']
+        session['pirate_pass'] = data['password']
 
         user_id = pirate_db.db.user.insert_one(data).inserted_id
         if 'json' in request.mimetype:

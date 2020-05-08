@@ -1,4 +1,4 @@
-BANNER = `<div id="title">
+BANNER = `<div id="header"><div id="title">
     <img src="/static/favicon.png" alt="pirate code logo PNG"/>
     <h1>Pirate Code</h1>
 </div>
@@ -11,5 +11,5 @@ BANNER = `<div id="title">
         <a href="/contact"><li class="${(window.location.pathname == "/contact")? "select" : "normal"}">contact</li></a>
     </nav>
     </div>
-</div>`;
+</div></div>`;
 document.write(BANNER)

@@ -41,7 +41,6 @@ def register():
     data = request.form.to_dict()
     if 'json' in request.mimetype:
         data = request.json
-    print(data)
 
     usernames = list(pirate_db.db.user.find({'username': data['username']}))
     emails = list(pirate_db.db.user.find({'email': data['email']}))

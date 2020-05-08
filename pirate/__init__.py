@@ -14,14 +14,35 @@ def index():
     return 'Hello World'
 
 
+@pirate.route('/logout', methods = ['GET', 'POST'])
+def logout():
+    try:
+        session.pop("pirate_user")
+        session.pop("pirate_pass")
+    except:pass
+    return redirect('/sign-in')
+
+@pirate.route('/sign-in', methods = ['GET', 'POST'])
+def login():
+    return redirect('/sign-up')
+
 @pirate.route('/sign-up', methods = ['GET', 'POST'])
 def register():
     if request.method == 'GET':
         try:
             return redirect(f'/{session["pirate_user"]}')
-        except KeyError: return render('register.html')
+        except KeyError:
+            try:
+                return render('register.html',
+                              warning = session["pirate_warning"])
+            except KeyError:return render('register.html',
+                                          warning = None)
 
-    data = request.json
+    data = request.form.to_dict()
+    if 'json' in request.mimetype:
+        data = request.json
+    print(data)
+
     usernames = list(pirate_db.db.user.find({'username': data['username']}))
     emails = list(pirate_db.db.user.find({'email': data['email']}))
 
@@ -34,10 +55,13 @@ def register():
         user_id = pirate_db.db.user.insert_one(data).inserted_id
         if 'json' in request.mimetype:
             return jsonify({ 'success': True })
+        else:
+            return redirect(f'/{session["pirate_user"]}')
     else:
         if 'json' in request.mimetype:
             return jsonify({ 'success': False }), 500
-        return render('register.html', warning = 'Your email or username did registered!'), 500
+        session["pirate_warning"] = 'Your email or username already exists!'
+        return render('register.html', warning = 'Your email or username already exists!'), 500
 
 
 @pirate.route('/<username>', methods = ['GET'])

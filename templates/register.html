@@ -33,7 +33,9 @@
         }
 
         #register input {
+            min-width: 200px;
             margin: 5px;
+            padding: 3px;
         }
 
         #register #send {
@@ -45,6 +47,12 @@
             background-color: #FFF !important;
         }
 
+        .warning {
+            color: #cc1040;
+            text-decoration: bold;
+            text-align: center;
+        }
+
         </style>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js" charset="utf-8"></script>
     </head>
@@ -52,33 +60,17 @@
         <script src="/static/header.js" charset="utf-8"></script>
         <section>
 
+            <p class="warning">{{warning if warning else ''}}</p>
 
-            <form id="register" method="post" accept-charset="utf-8">
+            <form action="/sign-up" id="register" method="post" accept-charset="utf-8">
                 <input placeholder="Username" type="text" name="username" id="username" value="">
                 <input placeholder="Email" type="email" name="email" id="email" value="">
                 <input placeholder="Password" type="password" name="password" id="password" value="">
-                <input type="button" name="send" id="send" value="register" onclick="send_data()">
+                <input type="submit" placeholder="register">
             </form>
 
 
         </section>
         <script src="/static/footer.js" charset="utf-8"></script>
-
-        <script charset="utf-8">
-            function send_data(){
-                let username = document.getElementById('username').value;
-                let email = document.getElementById('email').value;
-                let password = document.getElementById('password').value;
-
-                axios.post('/sign-up', {
-                    username, email, password
-                  })
-                  .then((response) => {
-                    console.log(response);
-                  }).catch((error) => {
-                    console.log(error);
-                  });
-            }
-        </script>
     </body>
 </html>

@@ -1,0 +1,44 @@
+<html lang="en">
+    <head>
+        <title>Pirate Society</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="language" content="english">
+        <meta name="viewport" content="width=device-width">
+
+        <meta name="description" content="A text editor for edit the posts of piratesociety.org">
+
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:site" content="@piratesociety">
+        <meta name="twitter:title" content="PirateSociety">
+        <meta name="twitter:description" content="A text editor for edit the posts of piratesociety.org">
+        <meta name="twitter:image" content="/static/favicon.png">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="/editor">
+        <meta property="og:image" content="/static/favicon.png">
+        <meta property="og:title" content="PirateEditor">
+        <meta property="og:site_name" content="PirateSociety">
+
+        <link rel="shortcut icon" href="/static/favicon.png" type="image/x-icon">
+
+        <link rel="stylesheet" href="/static/style.css" type="text/css" media="all">
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js" charset="utf-8"></script>
+    </head>
+    <body>
+        <script src="/static/header.js" charset="utf-8"></script>
+        <section>
+
+
+        <div id="user_profile">
+            <h1>{{data["name"]}}</h1>
+            <h3 class="username">@{{data["username"]}}</h3>
+            <p>{{data["bio"] if "bio" in data else "<i>empt</i>"}}</p>
+            <a href="{{data['curricullum']['directory'] if 'curricullum' in data else '/'}}" target="_blank">Curricullum</a>
+        </div>
+
+
+        </section>
+        <script src="/static/footer.js" charset="utf-8"></script>
+    </body>
+</html>

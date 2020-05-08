@@ -2,6 +2,7 @@ from pirate.session import pirate_session as session
 from flask import (Flask,
                    request,
                    jsonify,
+                   redirect,
                    render_template as render)
 
 pirate = Flask('Pirate Society')
@@ -37,6 +38,16 @@ def register():
         if 'json' in request.mimetype:
             return jsonify({ 'success': False }), 500
         return render('register.html', warning = 'Your email or username did registered!'), 500
+
+
+@pirate.route('/<username>', methods = ['GET'])
+def user(username):
+    user = pirate_db.db.user.find_one({'username': username})
+    if 'json' in request.mimetype:
+        return jsonify(user)
+    if user:
+        return render('profile.html', data=user)
+    return '<h1>User not found!</h1>', 404
 
 
 @pirate.route('/editor', methods = ['GET'])

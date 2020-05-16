@@ -11,6 +11,7 @@ requests = "*"
 Flask = "*"
 python-dotenv = "*"
 flask-pymongo = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.8"

@@ -24,7 +24,44 @@ def logout():
 
 @pirate.route('/sign-in', methods = ['GET', 'POST'])
 def login():
-    return redirect('/sign-up')
+    if request.method == 'GET':
+        try:
+            return redirect(f'/{session["pirate_user"]}')
+        except KeyError:
+            try:
+
+                warning = session["pirate_warning"]
+
+                session.pop("pirate_warning")
+                return render('login.html',
+                              warning = warning)
+            except KeyError:return render('login.html',
+                                          warning = None)
+
+    data = request.form.to_dict()
+    if 'json' in request.mimetype:
+        data = request.json
+
+    username = pirate_db.db.user.find_one({'username': data['login']})
+    email = pirate_db.db.user.find_one({'email': data['login']})
+    user = email if email else username
+
+    data['password'] = hash(data['password'])
+    if user and data['password'] == user['password']:
+        session['pirate_user'] = user['username']
+        session['pirate_pass'] = user['password']
+
+        if 'json' in request.mimetype:
+            return jsonify({ 'success': True })
+        else:
+            return redirect(f'/{session["pirate_user"]}')
+    else:
+        if 'json' in request.mimetype:
+            return jsonify({ 'success': False }), 500
+
+        session["pirate_warning"] = f'This user not exists!'
+        return render('login.html', warning = session["pirate_warning"]), 500
+    return jsonify(dict(zip(session.keys(), session.items())))
 
 @pirate.route('/sign-up', methods = ['GET', 'POST'])
 def register():

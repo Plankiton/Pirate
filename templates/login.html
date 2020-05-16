@@ -1,0 +1,75 @@
+<html lang="en">
+    <head>
+        <title>Pirate Society</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="language" content="english">
+        <meta name="viewport" content="width=device-width">
+
+        <meta name="description" content="A text editor for edit the posts of piratesociety.org">
+
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:site" content="@piratesociety">
+        <meta name="twitter:title" content="PirateSociety">
+        <meta name="twitter:description" content="A text editor for edit the posts of piratesociety.org">
+        <meta name="twitter:image" content="/static/favicon.png">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="/editor">
+        <meta property="og:image" content="/static/favicon.png">
+        <meta property="og:title" content="PirateEditor">
+        <meta property="og:site_name" content="PirateSociety">
+
+        <link rel="shortcut icon" href="/static/favicon.png" type="image/x-icon">
+
+        <link rel="stylesheet" href="/static/style.css" type="text/css" media="all">
+
+        <style type="text/css" media="screen">
+        #register {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around;
+            margin: 50px;
+        }
+
+        #register input {
+            min-width: 200px;
+            margin: 5px;
+            padding: 3px;
+        }
+
+        #register #send {
+            background-color: #DDD !important;
+            color: #000
+        }
+
+        #register #send:hover {
+            background-color: #FFF !important;
+        }
+
+        .warning {
+            color: #cc1040;
+            text-decoration: bold;
+            text-align: center;
+        }
+
+        </style>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js" charset="utf-8"></script>
+    </head>
+    <body>
+        <script src="/static/header.js" charset="utf-8"></script>
+        <section>
+
+            <p class="warning">{{warning if warning else ''}}</p>
+
+            <form action="/sign-in" id="register" method="post" accept-charset="utf-8">
+                <input placeholder="Username or email" type="text" name="login" id="login" value="">
+                <input placeholder="Password" type="password" name="password" id="password" value="">
+                <input type="submit" placeholder="login">
+            </form>
+
+
+        </section>
+        <script src="/static/footer.js" charset="utf-8"></script>
+    </body>
+</html>

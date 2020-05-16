@@ -1,0 +1,27 @@
+{
+  "name": "Pirate Society",
+  "description": "A blog to collect dev informations.",
+  "image": "heroku/python",
+  "repository": "https://github.com/RoboCopGay/EphisemDetect",
+  "keywords": ["python", "flask" ],
+  "addons": [],
+  "env": {
+    "SECRET_KEY": {
+      "description": "Secret Key for application",
+      "generator": "secret"
+    }
+  },
+  "environments": {
+    "test": {
+      "scripts": {
+        "test-setup": "python run.py",
+        "test": "python run.py"
+      }
+    },
+    "start": {
+        "scripts": {
+            "start": "python run.py"
+        }
+    }
+  }
+}

@@ -70,8 +70,12 @@ def register():
             return redirect(f'/{session["pirate_user"]}')
         except KeyError:
             try:
+
+                warning = session["pirate_warning"]
+
+                session.pop("pirate_warning")
                 return render('register.html',
-                              warning = session["pirate_warning"])
+                              warning = warning)
             except KeyError:return render('register.html',
                                           warning = None)
 

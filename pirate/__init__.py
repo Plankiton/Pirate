@@ -1,8 +1,8 @@
-from pirate.session import pirate_session as session
 from flask import (Flask,
                    request,
                    jsonify,
                    redirect,
+                   make_response as mkres,
                    render_template as render)
 
 pirate = Flask('Pirate Society')
@@ -16,27 +16,29 @@ def index():
 
 @pirate.route('/logout', methods = ['GET', 'POST'])
 def logout():
-    try:
-        session.pop("pirate_user")
-        session.pop("pirate_pass")
-    except:pass
-    return redirect('/sign-in')
+    response = redirect('/sign-in')
+    response.set_cookie('user', 'null',
+                        max_age=0)
+    response.set_cookie('pass', 'null',
+                        max_age=0)
+
+    return response
 
 @pirate.route('/sign-in', methods = ['GET', 'POST'])
 def login():
+    response = None
     if request.method == 'GET':
-        try:
-            return redirect(f'/{session["pirate_user"]}')
-        except KeyError:
-            try:
-
-                warning = session["pirate_warning"]
-
-                session.pop("pirate_warning")
-                return render('login.html',
-                              warning = warning)
-            except KeyError:return render('login.html',
-                                          warning = None)
+        user = request.cookies.get("user")
+        if user:
+            response = redirect('/')
+        elif request.args.get('error', default=False):
+                response = mkres(
+                    render('login.html',
+                           warning = 'This user not exists')
+                )
+        else:
+            response = mkres(render('login.html', warning = None))
+        return response
 
     data = request.form.to_dict()
     if 'json' in request.mimetype:
@@ -48,36 +50,37 @@ def login():
 
     data['password'] = hash(data['password'])
     if user and data['password'] == user['password']:
-        session['pirate_user'] = user['username']
-        session['pirate_pass'] = user['password']
-
         if 'json' in request.mimetype:
-            return jsonify({ 'success': True })
+            response = jsonify({ 'success': True })
         else:
-            return redirect(f'/{session["pirate_user"]}')
+            response = redirect('/')
+
+        response.set_cookie('user',
+                            user['username'],
+                            max_age=60**2*30)
+        response.set_cookie('pass',
+                            user['password'],
+                            max_age=60**2*30)
+
     else:
         if 'json' in request.mimetype:
-            return jsonify({ 'success': False }), 500
+            response = jsonify({ 'success': False }), 500
 
-        session["pirate_warning"] = f'This user not exists!'
-        return render('login.html', warning = session["pirate_warning"]), 500
-    return jsonify(dict(zip(session.keys(), session.items())))
+        response = redirect('/sign-in?error=true')
+
+    print(
+        dict(zip(request.cookies.keys(),
+                 request.cookies.items()))
+    )
+
+    return response
 
 @pirate.route('/sign-up', methods = ['GET', 'POST'])
 def register():
     if request.method == 'GET':
-        try:
-            return redirect(f'/{session["pirate_user"]}')
-        except KeyError:
-            try:
-
-                warning = session["pirate_warning"]
-
-                session.pop("pirate_warning")
-                return render('register.html',
-                              warning = warning)
-            except KeyError:return render('register.html',
-                                          warning = None)
+        warning = 'The username or email alredy exists!!'
+        error = request.args.get('error', default=False)
+        return render('register.html', warning = warning if error else None)
 
     data = request.form.to_dict()
     if 'json' in request.mimetype:
@@ -88,20 +91,25 @@ def register():
 
     if emails == [] and usernames == []:
         data['password'] = hash(data['password'])
-
-        session['pirate_user'] = data['username']
-        session['pirate_pass'] = data['password']
-
         user_id = pirate_db.db.user.insert_one(data).inserted_id
         if 'json' in request.mimetype:
-            return jsonify({ 'success': True })
+            response = jsonify({ 'success': True })
         else:
-            return redirect(f'/{session["pirate_user"]}')
+            response = redirect('/')
+
+        response.set_cookie('user',
+                            data['username'],
+                            max_age=60**2*30)
+        response.set_cookie('pass',
+                            data['password'],
+                            max_age=60**2*30)
+
     else:
         if 'json' in request.mimetype:
-            return jsonify({ 'success': False }), 500
-        session["pirate_warning"] = 'Your email or username already exists!'
-        return render('register.html', warning = 'Your email or username already exists!'), 500
+            response = jsonify({ 'success': False }), 500
+        response = render('register.html', warning = 'Your email or username already exists!'), 500
+
+    return response
 
 
 @pirate.route('/<username>', methods = ['GET'])
